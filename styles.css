@@ -1,0 +1,133 @@
+/* Importing the font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+/* Global styles */
+body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(to right, #4CA9DF, #292E91);
+    margin: 0;
+    padding: 20px;
+}
+
+/* Header styles */
+h1 {
+    color: #ffffff;
+}
+
+/* Form styling */
+form {
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Button styling */
+button {
+    background-color: #8FBECE;
+    color: black; /* Fixed 'font-color' to 'color' */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #365899;
+}
+
+/* Post styling */
+#posts {
+    margin-top: 30px;
+    color: black; /* Fixed typo 'balck' */
+}
+
+.post {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form sections (login, register, etc.) */
+#loginForm, #registerForm, #forgotPasswordForm {
+    margin-top: 20px;
+}
+
+/* Logout button */
+#logoutButton {
+    background-color: red;
+}
+
+/* Forgot Password Form hidden by default */
+#forgotPasswordForm {
+    display: none;
+}
+
+/* Register form input styles */
+#registerUsername, #registerEmail, #registerPassword {
+    border: none;
+    border-radius: 20px;
+    height: 30px;
+    width: 20em;
+    margin-bottom: 10px;
+}
+
+#registerUsername {
+    width: 20em;
+}
+
+#registerUsername:hover, #registerEmail:hover, #registerPassword:hover {
+    border-color: black;
+}
+
+/* Login form input styles */
+#loginEmail, #loginPassword {
+    border: none;
+    border-radius: 20px;
+    height: 30px;
+    width: 20em;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+/* Special button (styled like a card) */
+#ab {
+    background-color: black;
+    border-radius: 22px;
+    margin-top: 8px;
+    box-shadow: 2px 5px 25px 0.5px;
+    font-family: 'Quicksand', sans-serif;
+    text-align: center;
+    color: white;
+}
+
+/* Logs section */
+#logs {
+    background-color: white;
+    border-radius: 22px;
+    margin-top: 8px;
+    color: black;
+    font-weight: bold;
+    box-shadow: 2px 5px 25px 0.5px;
+    font-family: 'Quicksand', sans-serif;
+    text-align: center;
+}
+
+/* Forgot Password button */
+#forgotPasswordButton {
+    background-color: white;
+    border-radius: 22px;
+    margin-top: 8px;
+    color: black;
+    font-weight: bold;
+    box-shadow: 2px 5px 22px 0.5px #CDF5FF;
+    font-family: 'Quicksand', sans-serif;
+    text-align: center;
+    background: linear-gradient(to right, #74ebd5, #acb6e5);
+}
