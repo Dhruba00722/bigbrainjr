@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+import { getDatabase, ref, set, push, onValue, onChildAdded } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
 // Firebase config
@@ -163,53 +163,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Load posts from Firebase in descending order by timestamp
     const postsRef = ref(database, 'posts');
-    onValue(postsRef, (snapshot) => {
-        const posts = snapshot.val();
-        postsDiv.innerHTML = ''; // Clear existing posts
-        const orderedPosts = Object.entries(posts)
-            .sort((a, b) => b[1].timestamp - a[1].timestamp); // Sort posts by timestamp (newest first)
-
-        orderedPosts.forEach(([id, post]) => {
-            const div = document.createElement('div');
-            div.className = 'post';
-            const formattedDate = new Date(post.timestamp);
-            const formattedTime = post.formattedTime; // Use stored formatted time
-            div.innerHTML = `
-                <strong>${post.username} (Posted on ${formattedDate.toLocaleDateString()} at ${formattedTime})</strong><br>
-                ${post.content}<br>
-                <button class="likeButton" data-id="${id}">Like (${post.likes})</button>
-                <button class="dislikeButton" data-id="${id}">Dislike (${post.dislikes})</button>
-            `;
-            postsDiv.appendChild(div);
-        });
+    onChildAdded(postsRef, (snapshot) => {
+        const post = snapshot.val();
+        const postsDiv = document.getElementById('posts');
+        
+        // Create a new div for the post
+        const div = document.createElement('div');
+        div.className = 'post';
+        const formattedDate = new Date(post.timestamp);
+        const formattedTime = post.formattedTime; // Use stored formatted time
+        div.innerHTML = `
+            <strong>${post.username} (Posted on ${formattedDate.toLocaleDateString()} at ${formattedTime})</strong><br>
+            ${post.content}<br>
+            <button class="likeButton" data-id="${snapshot.key}">Like (${post.likes})</button>
+            <button class="dislikeButton" data-id="${snapshot.key}">Dislike (${post.dislikes})</button>
+        `;
+        
+        // Prepend the new post to the top of the posts div
+        postsDiv.insertBefore(div, postsDiv.firstChild);
 
         // Add like/dislike functionality
-        const likeButtons = document.querySelectorAll('.likeButton');
-        likeButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const postId = e.target.dataset.id;
-                const postRef = ref(database, 'posts/' + postId);
-                postRef.once('value', (snapshot) => {
-                    const post = snapshot.val();
-                    set(postRef, {
-                        ...post,
-                        likes: post.likes + 1
-                    });
+        const likeButton = div.querySelector('.likeButton');
+        likeButton.addEventListener('click', (e) => {
+            const postId = e.target.dataset.id;
+            const postRef = ref(database, 'posts/' + postId);
+            postRef.once('value', (snapshot) => {
+                const post = snapshot.val();
+                set(postRef, {
+                    ...post,
+                    likes: post.likes + 1
                 });
             });
         });
 
-        const dislikeButtons = document.querySelectorAll('.dislikeButton');
-        dislikeButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const postId = e.target.dataset.id;
-                const postRef = ref(database, 'posts/' + postId);
-                postRef.once('value', (snapshot) => {
-                    const post = snapshot.val();
-                    set(postRef, {
-                        ...post,
-                        dislikes: post.dislikes + 1
-                    });
+        const dislikeButton = div.querySelector('.dislikeButton');
+        dislikeButton.addEventListener('click', (e) => {
+            const postId = e.target.dataset.id;
+            const postRef = ref(database, 'posts/' + postId);
+            postRef.once('value', (snapshot) => {
+                const post = snapshot.val();
+                set(postRef, {
+                    ...post,
+                    dislikes: post.dislikes + 1
                 });
             });
         });
