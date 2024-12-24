@@ -22,7 +22,7 @@ const auth = getAuth();
 let currentUser = null;
 
 // DOM content loaded event
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const postForm = document.getElementById('postForm');
     const registerForm = document.getElementById('registerForm');
     const loginForm = document.getElementById('loginForm');
@@ -128,17 +128,33 @@ document.addEventListener('DOMContentLoaded', function() {
     postForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const content = document.getElementById('content').value;
-        if (content && currentUser && content.length >= 5)
         if (content && currentUser && content.length >= 5) {
             const postsRef = ref(database, 'posts');
             const newPostRef = push(postsRef);
-            set(newPostRef, {
-                content: content,
-                timestamp: Date.now(),
-                username: currentUser.email, // Store username from auth
-                likes: 0,
-                dislikes: 0
+
+            // Fetch the username from the database
+            const userRef = ref(database, 'users/' + currentUser.uid);
+            onValue(userRef, (snapshot) => {
+                const user = snapshot.val();
+                const username = user ? user.username : 'Anonymous';
+
+                // Save post with 12-hour formatted time
+                const timestamp = Date.now();
+                const postDate = new Date(timestamp);
+                const formattedTime = postDate.toLocaleString('en-US', {
+                    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+                });
+
+                set(newPostRef, {
+                    content: content,
+                    timestamp: timestamp,
+                    username: username,
+                    formattedTime: formattedTime, // Store formatted time
+                    likes: 0,
+                    dislikes: 0
+                });
             });
+
             document.getElementById('content').value = ''; // Clear the textarea
         } else {
             alert("Post content must be at least 5 characters.");
@@ -156,10 +172,10 @@ document.addEventListener('DOMContentLoaded', function() {
         orderedPosts.forEach(([id, post]) => {
             const div = document.createElement('div');
             div.className = 'post';
-            const postDate = new Date(post.timestamp);
-            const formattedDate = `${postDate.toLocaleDateString()} ${postDate.toLocaleTimeString()}`;
+            const formattedDate = new Date(post.timestamp);
+            const formattedTime = post.formattedTime; // Use stored formatted time
             div.innerHTML = `
-                <strong>${post.username} (Posted on ${formattedDate})</strong><br>
+                <strong>${post.username} (Posted on ${formattedDate.toLocaleDateString()} at ${formattedTime})</strong><br>
                 ${post.content}<br>
                 <button class="likeButton" data-id="${id}">Like (${post.likes})</button>
                 <button class="dislikeButton" data-id="${id}">Dislike (${post.dislikes})</button>
