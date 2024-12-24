@@ -1,12 +1,25 @@
 /* Importing the font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
-/* Global styles */
 body {
-    font-family: 'Quicksand', sans-serif;
-    background: linear-gradient(to right, #4CA9DF, #292E91);
-    margin: 0;
-    padding: 20px;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(to right, #11998e, #3def7d, #3f5efb);
+  background-size: 400% 400%; /* Ensures the gradient spans and moves */
+  margin: 0;
+  padding: 20px;
+  animation: backgroundAnimation 10s ease infinite; /* Animation applied here */
+}
+
+@keyframes backgroundAnimation {
+  0% {
+    background-position: 0% 50%; /* Start position */
+  }
+  50% {
+    background-position: 100% 50%; /* Mid position */
+  }
+  100% {
+    background-position: 0% 50%; /* End position */
+  }
 }
 
 /* Header styles */
@@ -82,8 +95,9 @@ button:hover {
     width: 20em;
 }
 
-#registerUsername:hover, #registerEmail:hover, #registerPassword:hover {
-    border-color: black;
+#registerUsername:focus, #registerEmail:focus, #registerPassword:focus {
+  border: none;
+  outline: none; 
 }
 
 /* Login form input styles */
@@ -94,6 +108,10 @@ button:hover {
     width: 20em;
     margin-bottom: 10px;
     text-align: left;
+}
+#loginEmail, #loginPassword:focus {
+    border: none;
+  outline: none;
 }
 
 /* Special button (styled like a card) */
@@ -130,4 +148,67 @@ button:hover {
     font-family: 'Quicksand', sans-serif;
     text-align: center;
     background: linear-gradient(to right, #74ebd5, #acb6e5);
+}
+#resetPasswordButton:focus{
+    border: none;
+  outline: none;
+}
+#content:focus {
+  border: none;
+  outline: none;
+}
+#content {
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(to right, #0f3443, #333333, #c3cfe2); /* New cool colors */
+  background-size: 400% 400%; /* Ensures the gradient spans and moves */
+  color: white;
+  font-weight: bold;
+  animation: gradientAnimation 15s ease infinite; /* Smooth, slower animation */
+  text-shadow: none;
+  
+  width: 90%;
+  height:20em;
+  align-content:top;
+  
+  
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%; /* Start position */
+  }
+  25% {
+    background-position: 50% 50%; /* First smooth transition */
+  }
+  50% {
+    background-position: 100% 50%; /* Mid position */
+  }
+  75% {
+    background-position: 50% 50%; /* Second smooth transition */
+  }
+  100% {
+    background-position: 0% 50%; /* End position */
+  }
+}
+#welcomeMessage {
+  color:white;
+}
+#logoutButton {
+  background: linear-gradient(to right,#CAF5FF,#F02424);
+}
+#forgotPasswordEmail:focus{
+  border: none;
+  outline: none;
+}
+#forgotPasswordEmail{
+  background-color: white;
+    border-radius: 22px;
+    margin-top: 8px;
+    color: black;
+    font-weight: bold;
+    height:30px;
+    width:100%;
+    box-shadow: 2px 5px 25px 0.5px;
+    font-family: 'Quicksand', sans-serif;
+    text-align: center;
 }
